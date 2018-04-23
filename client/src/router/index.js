@@ -22,6 +22,11 @@ export default new Router({
       path: '/catchups/new',
       name: 'NewCatchup',
       component: NewCatchup
+    },
+    {
+      path: '/catchups/:id',
+      name: 'EditCatchup',
+      component: EditCatchup
     }
   ]
 })

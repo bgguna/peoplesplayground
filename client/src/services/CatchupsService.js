@@ -4,7 +4,16 @@ export default {
     fetchCatchups() {
         return Api().get('catchups');
     },
-    addCatchup (params) {
+    addCatchup(params) {
         return Api().post('catchups', params);
+    },
+    updateCatchup(params) {
+        return Api().put('catchups/' + params.id, params);
+    },
+    getCatchup(params) {
+        return Api().get('catchup/' + params.id);
+    },
+    deleteCatchup(id) {
+        return Api().delete('catchups/' + id);
     }
 }

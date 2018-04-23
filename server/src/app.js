@@ -62,4 +62,51 @@ app.get('/catchups', (request, response) => {
     }).sort({_id:-1})
 });
 
+// Fetch single catchup.
+app.get('/catchup/:id', (request, response) => {
+    var db = request.db;
+    Catchup.findById(request.params.id, 'title description', function (error, catchup) {
+        if (error) {
+            console.error(error);
+        }
+        response.send(catchup);
+    })
+});
+
+// Update a catchup.
+app.put('/catchups/:id', (request, response) => {
+    var db = request.db;
+    Catchup.findById(request.params.id, 'title description', function (error, catchup) {
+        if (error) {
+            console.error(error);
+        }
+
+        catchup.title = request.body.title;
+        catchup.description = request.body.description;
+        catchup.save(function (error) {
+            if (error) {
+                console.log(error);
+            }
+            response.send({
+                success: true
+            });
+        });
+    })
+});
+
+// Delete a catchup.
+app.delete('/catchups/:id', (request, response) => {
+    var db = request.db;
+    Catchup.remove({
+        _id: request.params.id
+    }, function(error, catchup) {
+        if (error) {
+            response.send(error);
+        }
+        response.send({
+            success: true
+        })
+    })
+});
+
 app.listen(process.env.PORT || 8081);

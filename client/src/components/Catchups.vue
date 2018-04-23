@@ -16,7 +16,7 @@
                     <td>{{ catchup.description }}</td>
                     <td align="center">
                         <router-link v-bind:to="{ name: 'EditCatchup', params:{ id: catchup._id } }">Edit Catch-up</router-link>
-                        <a href="#">Delete</a>
+                        <a href="#" @click="deleteCatchup(catchup._id)">Delete</a>
                     </td>
                 </tr>
             </table>
@@ -41,9 +41,13 @@ export default {
         this.getCatchups()
     },
     methods: {
-        async getCatchups () {
+        async getCatchups() {
             const response = await CatchupsService.fetchCatchups()
             this.catchups = response.data.catchups
+        },
+        async deleteCatchup(id) {
+            await CatchupsService.deleteCatchup(id)
+            this.$router.push({ name: 'Catchups' })
         }
     }
 }
