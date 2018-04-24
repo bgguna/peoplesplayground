@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var CatchupSchema = new Schema({
@@ -6,5 +6,5 @@ var CatchupSchema = new Schema({
     description: String
 });
 
-var Catchup = mongoose.model('Catchup', CatchupSchema);
+var Catchup = mongoose.model("Catchup", CatchupSchema);
 module.exports = Catchup;

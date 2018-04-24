@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Catchups from '@/components/Catchups'
-import AddCatchup from '@/components/AddCatchup'
-import EditCatchup from '@/components/EditCatchup'
+import addcatchup from '@/components/AddCatchup'
+import editcatchup from '@/components/EditCatchup'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -15,13 +16,13 @@ export default new Router({
     },
     {
       path: '/catchups/add',
-      name: 'addcatchup',
-      component: addcatchup
+      component: addcatchup,
+      name: 'addcatchup'
     },
     {
       path: '/catchups/:id/edit',
-      name: 'editcatchup',
-      component: editcatchup
+      component: editcatchup,
+      name: 'editcatchup'
     }
   ]
 })

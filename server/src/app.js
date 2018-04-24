@@ -2,19 +2,35 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
-const mongodbConnection = require('./mongodbConnection');
 
+// App setup.
 const app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
 
+// Database connection.
+const mongodbConnection = require('./mongodbConnection');
 var db = mongodbConnection.connect();
 
-var Catchup = require('../models/catchup');
+var Catchup = require("../models/catchup");
 
-// Add new catchup.
-app.post('/catchups', (request, response) => {
+/**
+ * Retrieves all catch-ups.
+ */
+app.get('/catchups', (request, response) => {
+    Catchup.find({}, 'title description', function (error, catchups) {
+        if (error) { console.error(error); }
+        response.send({
+            catchups: catchups
+        });
+    }).sort({ _id: -1 })
+});
+
+/**
+ * Adds/creates catch-up.
+ */
+app.post('/add_catchup', (request, response) => {
     var db = request.db;
     var title = request.body.title;
     var description = request.body.description;
@@ -25,39 +41,14 @@ app.post('/catchups', (request, response) => {
 
     new_catchup.save(function(error) {
         if (error) {
-            console.log(error);
+            console.log(error)
         }
         response.send({
-            success: true,
-            message: 'Catchup saved successfully.'
-        })
+            success: true
+        });
     });
 });
 
-// Fetch all catchups.
-app.get('/catchups', (request, response) => {
-    Catchup.find({}, 'title description', function(error, catchups) {
-        if (error) {
-            console.error(error);
-        }
-        response.send({
-            catchups: catchups
-        })
-    }).sort({_id:-1})
-});
-
-// Fetch single catchup.
-app.get('/catchup/:id', (request, response) => {
-    var db = request.db;
-    Catchup.findById(request.params.id, 'title description', function (error, catchup) {
-        if (error) {
-            console.error(error);
-        }
-        response.send(catchup);
-    })
-});
-
-// Update a catchup.
 app.put('/catchups/:id', (request, response) => {
     var db = request.db;
     Catchup.findById(request.params.id, 'title description', function (error, catchup) {
@@ -75,22 +66,36 @@ app.put('/catchups/:id', (request, response) => {
                 success: true
             });
         });
-    })
+    });
 });
 
-// Delete a catchup.
+/**
+ * Deletes catch-up with id 'id'.
+ */
 app.delete('/catchups/:id', (request, response) => {
     var db = request.db;
     Catchup.remove({
         _id: request.params.id
-    }, function(error, catchup) {
-        if (error) {
+    }, function (error, catchup) {
+        if (error)
             response.send(error);
-        }
         response.send({
             success: true
-        })
-    })
+        });
+    });
+});
+
+/**
+ * Get catch-up with id 'id'.
+ */
+app.get('/catchup/:id', (request, response) => {
+    var db = request.db;
+    Catchup.findById(request.params.id, 'title description', function (error, catchup) {
+        if (error) {
+            console.error(error);
+        }
+        response.send(catchup);
+    });
 });
 
 app.listen(process.env.PORT || 8081);
