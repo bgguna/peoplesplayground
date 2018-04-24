@@ -15,6 +15,11 @@ export default new Router({
       component: Catchups
     },
     {
+      path: '/catchups',
+      name: 'Catchups',
+      component: Catchups
+    },
+    {
       path: '/catchups/add',
       component: addcatchup,
       name: 'addcatchup'
