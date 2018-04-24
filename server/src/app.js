@@ -9,6 +9,9 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
 
+// Utilities.
+const utils = require('./utils');
+
 // Database connection.
 const mongodbConnection = require('./mongodbConnection');
 var db = mongodbConnection.connect();
@@ -19,7 +22,7 @@ var Catchup = require("../models/catchup");
  * Retrieves all catch-ups.
  */
 app.get('/catchups', (request, response) => {
-    Catchup.find({}, 'title description', function (error, catchups) {
+    Catchup.find({}, 'date summary', function (error, catchups) {
         if (error) { console.error(error); }
         response.send({
             catchups: catchups
@@ -32,11 +35,11 @@ app.get('/catchups', (request, response) => {
  */
 app.post('/add_catchup', (request, response) => {
     var db = request.db;
-    var title = request.body.title;
-    var description = request.body.description;
+    var date = utils.getFormattedDate();
+    var summary = request.body.summary;
     var new_catchup = new Catchup({
-        title: title,
-        description: description
+        date: date,
+        summary: summary
     });
 
     new_catchup.save(function(error) {
@@ -51,13 +54,13 @@ app.post('/add_catchup', (request, response) => {
 
 app.put('/catchups/:id', (request, response) => {
     var db = request.db;
-    Catchup.findById(request.params.id, 'title description', function (error, catchup) {
+    Catchup.findById(request.params.id, 'date summary', function (error, catchup) {
         if (error) {
             console.error(error);
         }
 
-        catchup.title = request.body.title;
-        catchup.description = request.body.description;
+        catchup.date = request.body.date;
+        catchup.summary = request.body.summary;
         catchup.save(function (error) {
             if (error) {
                 console.log(error);
@@ -90,7 +93,7 @@ app.delete('/catchups/:id', (request, response) => {
  */
 app.get('/catchup/:id', (request, response) => {
     var db = request.db;
-    Catchup.findById(request.params.id, 'title description', function (error, catchup) {
+    Catchup.findById(request.params.id, 'date summary', function (error, catchup) {
         if (error) {
             console.error(error);
         }

@@ -1,13 +1,11 @@
 <template>
     <div class="catchups">
-    <h1>Add Catch-up</h1>
-        <div class="form">
-            <div>
-                <textarea rows="15" cols="15" placeholder="SUMMARY" v-model="summary"></textarea>
-            </div>
-            <div>
-                <button class="app_catchup_btn" @click="addCatchup">Add</button>
-            </div>
+        <h1>Edit Catch-up</h1>
+        <div class="summary">
+
+        </div>
+        <div>
+                <button class="app_back_btn" @click="backToCatchups">Back</button>
         </div>
     </div>
 </template>
@@ -15,24 +13,25 @@
 <script>
 import CatchupsService from '@/services/CatchupsService'
 export default {
-    name: 'addcatchup',
+    name: 'viewcatchup',
     data () {
         return {
             date: '',
             summary: ''
         }
     },
+    mounted () {
+        this.getCatchup()
+    },
     methods: {
-        async addCatchup () {
-            await CatchupsService.addCatchup({
-                date: this.date,
-                summary: this.summary
+        async getCatchup () {
+            const response = await CatchupsService.getCatchup({
+                id: this.$route.params.id
             })
-            this.$swal(
-                'Great!',
-                `Your catchup has been added!`,
-                'success'
-            )
+            this.date = response.data.date
+            this.summary = response.data.summary
+        },
+        async backToCatchups () {
             this.$router.push({ name: 'Catchups' })
         }
     }
@@ -40,17 +39,15 @@ export default {
 </script>
 
 <style type="text/css">
-.form input, .form textarea {
+.summary div {
     width: 500px;
     padding: 10px;
     border: 1px solid #e0dede;
     outline: none;
     font-size: 12px;
 }
-.form div {
-    margin: 20px;
-}
-.app_catchup_btn {
+
+.app_back_btn {
     background: #4d7ef7;
     color: #fff;
     padding: 10px 80px;

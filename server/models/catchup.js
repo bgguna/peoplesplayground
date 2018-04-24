@@ -2,8 +2,8 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var CatchupSchema = new Schema({
-    title: String,
-    description: String
+    date: String,
+    summary: String
 });
 
 var Catchup = mongoose.model("Catchup", CatchupSchema);
