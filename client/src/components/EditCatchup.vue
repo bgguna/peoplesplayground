@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import CatchupsService from '@/services/CatchupsServer'
+import CatchupsService from '@/services/CatchupsService'
 export default {
     name: 'editcatchup',
     data () {

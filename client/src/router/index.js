@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 import Catchups from '@/components/Catchups'
-import NewCatchup from '@/components/NewCatchup'
+import AddCatchup from '@/components/AddCatchup'
+import EditCatchup from '@/components/EditCatchup'
 
 Vue.use(Router)
 

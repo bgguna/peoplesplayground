@@ -1,6 +1,6 @@
 <template>
     <div class="catchups">
-        <h1>Add Catchup</h1>
+        <h1>Add Catch-up</h1>
             <div class="form">
                 <div>
                     <input type="text" name="title" placeholder="TITLE" v-model="title">

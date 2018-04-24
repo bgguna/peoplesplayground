@@ -1,9 +1,9 @@
 <template>
     <div class="catchups">
-        <h1>Catchups</h1>
+        <h1>Catch-ups</h1>
         <div v-if="catchups.length > 0" class="table-wrap">
             <div>
-                <router-link v-bind:to="{ name: 'NewCatchup' }" class="">Add Catch-up</router-link>
+                <router-link v-bind:to="{ name: 'addcatchup' }" class="">Add Catch-up</router-link>
             </div>
             <table>
                 <tr>
@@ -15,15 +15,14 @@
                     <td>{{ catchup.title }}</td>
                     <td>{{ catchup.description }}</td>
                     <td align="center">
-                        <router-link v-bind:to="{ name: 'EditCatchup', params:{ id: catchup._id } }">Edit Catch-up</router-link>
-                        <a href="#" @click="deleteCatchup(catchup._id)">Delete</a>
+                        <router-link v-bind:to="{ name: 'editcatchup', params: { id: catchup._id } }">Edit</router-link> | <a href="#" @click="deleteCatchup(catchup._id)">Delete</a>
                     </td>
                 </tr>
             </table>
         </div>
         <div v-else>
-            There are no catch-ups... Maybe it's time to have one <br /><br />
-            <router-link v-bind:to="{ name: 'NewCatchup' }" class="add_catchup_link">Add Catch-up</router-link>
+            There are no catch-ups...Maybe it's time to have one <br/><br/>
+            <router-link v-bind:to="{ name: 'addcatchup' }" class="add_catchup_link">Add Catch-up</router-link>
         </div>
     </div>
 </template>
@@ -46,19 +45,33 @@ export default {
             this.catchups = response.data.catchups
         },
         async deleteCatchup(id) {
-            await CatchupsService.deleteCatchup(id)
-            this.$router.push({ name: 'Catchups' })
+            const $this = this
+            $this.$swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function() {
+                CatchupsService.deleteCatchup(id)
+                $this.$router.go({
+                    path: '/'
+                })
+            })
         }
     }
 }
 </script>
-<style>
+
+<style type="text/css">
 .table-wrap {
     width: 60%;
     margin: 0 auto;
     text-align: center;
 }
-table th, table tr {
+.table th, table tr {
     text-align: left;
 }
 table thead {
