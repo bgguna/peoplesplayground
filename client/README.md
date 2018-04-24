@@ -1,6 +1,6 @@
-# client
+# Peoples Playground (Client)
 
-> A Vue.js project
+> A Vue.js project enabling professionals to manage, register catch-ups and have their end-of-year reviews automatically generated for them.
 
 ## Build Setup
 

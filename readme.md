@@ -12,7 +12,6 @@ Connect as a manager or managee, register your catch-ups, earn badges and with a
 * Node.js
 
 ## Getting started
-```bash
-npm install
-npm run dev
-```
+There are two components:
+* [Client](client/)
+* [Server](server/)
