@@ -1,6 +1,6 @@
 <template>
     <div class="catchups">
-        <h1>Edit Catch-up</h1>
+        <h1>Add Catchup</h1>
             <div class="form">
                 <div>
                     <input type="text" name="title" placeholder="TITLE" v-model="title">
@@ -9,39 +9,33 @@
                     <textarea rows="15" cols="15" placeholder="DESCRIPTION" v-model="description"></textarea>
                 </div>
                 <div>
-                    <button class="app_catchup_btn" @click="updateCatchup">Update</button>
+                    <button class="app_catchup_btn" @click="addCatchup">Add</button>
                 </div>
             </div>
     </div>
 </template>
 
 <script>
-import CatchupsService from '@/services/CatchupsServer'
+import CatchupsService from '@/services/CatchupsService'
 export default {
-    name: 'editcatchup',
+    name: 'addcatchup',
     data () {
         return {
             title: '',
             description: ''
         }
     },
-    mounted () {
-        this.getCatchup()
-    },
     methods: {
-        async getCatchup() {
-            const response = await CatchupsService.getCatchup({
-                id: this.$route.params.id
-            })
-            this.title = response.data.title
-            this.description = response.data.description
-        },
-        async updateCatchup() {
-            await CatchupsService.updateCatchup({
-                id: this.$route.params.id,
+        async addCatchup () {
+            await CatchupsService.addCatchup({
                 title: this.title,
                 description: this.description
             })
+            this.$swal(
+                'Great!',
+                'Your catchup has been added!',
+                'success'
+            )
             this.$router.push({ name: 'Catchups' })
         }
     }
@@ -49,7 +43,7 @@ export default {
 </script>
 
 <style type="text/css">
-.form input .form textarea {
+.form input, .form textarea {
     width: 500px;
     padding: 10px;
     border: 1px solid #e0dede;

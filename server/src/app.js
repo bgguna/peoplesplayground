@@ -2,32 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
-
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/catchups');
-var db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error'));
-db.once('open', function(callback) {
-    console.log('Connection succeeded');
-});
-
-var Catchup = require('../models/catchup');
+const mongodbConnection = require('./mongodbConnection');
 
 const app = express();
-
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/catchups', (request, response) => {
-    response.send(
-        [{
-            title: "Hello World!",
-            description: "Hi there! How are you?"
-        }]
-    )
-});
+var db = mongodbConnection.connect();
+
+var Catchup = require('../models/catchup');
 
 // Add new catchup.
 app.post('/catchups', (request, response) => {

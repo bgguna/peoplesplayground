@@ -10,23 +10,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'catchups',
-      component: Catchups
-    },
-    {
-      path: '/catchups',
       name: 'Catchups',
       component: Catchups
     },
     {
-      path: '/catchups/new',
-      name: 'NewCatchup',
-      component: NewCatchup
+      path: '/catchups/add',
+      name: 'addcatchup',
+      component: addcatchup
     },
     {
-      path: '/catchups/:id',
-      name: 'EditCatchup',
-      component: EditCatchup
+      path: '/catchups/:id/edit',
+      name: 'editcatchup',
+      component: editcatchup
     }
   ]
 })
